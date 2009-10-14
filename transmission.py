@@ -168,8 +168,6 @@ class Transmission:
         # make sure there are no undefined values
         self.wait_for_torrentlist_update()
 
-
-
     def update(self, delay, tag_waiting_for=0):
         """Maintain up-to-date data."""
 
@@ -224,8 +222,6 @@ class Transmission:
 
         return response['tag']
 
-
-
     def get_global_stats(self):
         return self.status_cache
 
@@ -248,7 +244,6 @@ class Transmission:
         else:
             return None
 
-
     def get_torrent_details(self):
         return self.torrent_details_cache
     def set_torrent_details_id(self, id):
@@ -257,19 +252,16 @@ class Transmission:
         else:
             self.requests['torrent-details'].set_request_data('torrent-get', self.TAG_TORRENT_DETAILS,
                                                               {'ids':id, 'fields': self.DETAIL_FIELDS})
-
     def get_hosts(self):
         return self.hosts_cache
 
     def get_geo_ips(self):
         return self.geo_ips_cache
 
-
     def set_option(self, option_name, option_value):
         request = TransmissionRequest(self.host, self.port, 'session-set', 1, {option_name: option_value})
         request.send_request()
         self.wait_for_status_update()
-
 
     def set_rate_limit(self, direction, new_limit, torrent_id=-1):
         data = dict()
@@ -337,8 +329,6 @@ class Transmission:
         request = TransmissionRequest(self.host, self.port, 'torrent-remove', 1, {'ids': [id]})
         request.send_request()
         self.wait_for_torrentlist_update()
-
-
 
     def increase_file_priority(self, file_nums):
         file_nums = list(file_nums)
