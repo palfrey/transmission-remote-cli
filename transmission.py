@@ -229,7 +229,7 @@ class Transmission:
     def get_global_stats(self):
         return self.status_cache
 
-    def get_torrent_list(self, sort_orders, reverse=False):
+    def get_torrent_list(self, sort_orders = [], reverse=False):
         try:
             for sort_order in sort_orders:
                 if isinstance(self.torrent_cache[0][sort_order], (str, unicode)):
