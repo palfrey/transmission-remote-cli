@@ -12,6 +12,10 @@ except ImportError: features['dns'] = False
 try:   import GeoIP; features['geoip'] = True  # show country peer seems to be in
 except ImportError:  features['geoip'] = False
 
+# error codes
+CONNECTION_ERROR = 1
+JSON_ERROR       = 2
+
 # Handle communication with Transmission server.
 class TransmissionRequest:
     def __init__(self, host, port, method=None, tag=None, arguments=None):

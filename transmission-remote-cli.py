@@ -63,10 +63,6 @@ if connection:
         HOST = connection[0]
 
 
-# error codes
-CONNECTION_ERROR = 1
-JSON_ERROR       = 2
-
 from transmission import *
 
 # User Interface
