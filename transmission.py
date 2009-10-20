@@ -114,7 +114,7 @@ class Transmission:
 
     DETAIL_FIELDS = [ 'files', 'priorities', 'wanted', 'peers', 'trackers',
                       'activityDate', 'dateCreated', 'startDate', 'doneDate',
-                      'totalSize', 'comment',
+                      'totalSize', 'leftUntilDone', 'comment',
                       'announceURL', 'announceResponse', 'lastAnnounceTime',
                       'nextAnnounceTime', 'lastScrapeTime', 'nextScrapeTime',
                       'scrapeResponse', 'scrapeURL',
