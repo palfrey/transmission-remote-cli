@@ -1559,11 +1559,8 @@ def quit(msg='', exitcode=0):
     print >> sys.stderr, msg,
     os._exit(exitcode)
 
-
-
-ui = Interface(Transmission(HOST, PORT, USERNAME, PASSWORD))
-
-
-
-
+try:
+	ui = Interface(Transmission(HOST, PORT, USERNAME, PASSWORD))
+except TransmissionException,e:
+	quit(e.message, e.exitcode)
 

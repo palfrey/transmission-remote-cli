@@ -16,6 +16,11 @@ except ImportError:  features['geoip'] = False
 CONNECTION_ERROR = 1
 JSON_ERROR       = 2
 
+class TransmissionException(Exception):
+	def __init__(self, msg, exitcode=0):
+		Exception.__init__(self,msg)
+		self.exitcode = exitcode
+
 # Handle communication with Transmission server.
 class TransmissionRequest:
     def __init__(self, host, port, method=None, tag=None, arguments=None):
@@ -57,13 +62,13 @@ class TransmissionRequest:
                 self.http_request.add_header('X-Transmission-Session-Id', m.group(1))
                 self.send_request()
             except AttributeError: # a real error occurred
-                quit(str(msg) + "\n", CONNECTION_ERROR)
+                raise TransmissionException(str(msg) + "\n", CONNECTION_ERROR)
         except urllib2.URLError, msg:
             try:
                 reason = msg.reason[1]
             except IndexError:
                 reason = str(msg.reason)
-            quit("Cannot connect to %s: %s\n" % (self.http_request.host, reason), CONNECTION_ERROR)
+            raise TransmissionException("Cannot connect to %s: %s\n" % (self.http_request.host, reason), CONNECTION_ERROR)
 
     def get_response(self):
         """Get response to previously sent request."""
@@ -74,7 +79,7 @@ class TransmissionRequest:
         try:
             data = json.loads(response)
         except ValueError:
-            quit("Cannot not parse response: %s\n" % response, JSON_ERROR)
+            raise TransmissionException("Cannot not parse response: %s\n" % response, JSON_ERROR)
         self.open_request = None
         return data
 
@@ -142,13 +147,13 @@ class Transmission:
         min_msg = "Please install Transmission version " + self.TRNSM_VERSION_MIN + " or higher.\n"
         try:
             if response['arguments']['rpc-version'] < self.RPC_VERSION_MIN:
-                quit(version_error + min_msg)
+                raise TransmissionException(version_error + min_msg)
         except KeyError:
-            quit(version_error + min_msg)
+            raise TransmissionException(version_error + min_msg)
 
         # rpc version too new?
         if response['arguments']['rpc-version'] > self.RPC_VERSION_MAX:
-            quit(version_error + "Please install Transmission version " + self.TRNSM_VERSION_MAX + " or lower.\n")
+            raise TransmissionException(version_error + "Please install Transmission version " + self.TRNSM_VERSION_MAX + " or lower.\n")
 
 
         # set up request list
